@@ -30,12 +30,13 @@ def get_model(ctx, image_size, prefix, epoch, layer):
 
 
 class FaceModel:
-    def __init__(self, ctx_id, model_prefix, model_epoch, use_large_detector=False):
-        if use_large_detector:
-            self.detector = insightface.model_zoo.get_model('retinaface_r50_v1')
-        else:
-            self.detector = insightface.model_zoo.get_model('retinaface_mnet025_v2')
-        self.detector.prepare(ctx_id=ctx_id)
+    def __init__(self, ctx_id, model_prefix, model_epoch,use_detector=True, use_large_detector=False):
+        if use_detector:
+          if use_large_detector:
+              self.detector = insightface.model_zoo.get_model('retinaface_r50_v1')
+          else:
+              self.detector = insightface.model_zoo.get_model('retinaface_mnet025_v2')
+          self.detector.prepare(ctx_id=ctx_id)
         if ctx_id>=0:
             ctx = mx.gpu(ctx_id)
         else:
